@@ -1,8 +1,10 @@
-package com.sloi.templater;
+package com.sloi.templates;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
+
+import com.sloi.templater.TemplaterException;
 
 public class Expr extends Block {
 
@@ -17,14 +19,14 @@ public class Expr extends Block {
 	}
 	
 	@Override
-	public StringBuffer doProcess(Map<String, Object> scope) throws ParsingException {
+	public StringBuffer doProcess(Map<String, Object> scope) throws TemplaterException {
 		Object value = this.getValue(scope);
 		StringBuffer builder = new StringBuffer();
-		builder.append(value);
+		if (value != null) builder.append(value);
 		return builder;
 	}
 	
-	public Object getValue(Map<String, Object> scope) throws ParsingException {
+	public Object getValue(Map<String, Object> scope) throws TemplaterException {
 		if (path.length > 1) {
 			Object object = scope.get(path[0]);
 			String[] path = Arrays.copyOfRange(this.path, 1, this.path.length);
@@ -32,7 +34,7 @@ public class Expr extends Block {
 				return this.doGet(object, path);
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new ParsingException(this, e.getMessage());
+				throw new TemplaterException(this, e.getMessage());
 			}
 		} else {
 			return scope.get(this.path[0]);
@@ -63,18 +65,18 @@ public class Expr extends Block {
 		}
 	}
 	
-	private Object doEject(Object object, String name) throws ParsingException {
+	private Object doEject(Object object, String name) throws TemplaterException {
 		Method getter = this.getGetter(object, name);
 		try {
 			getter.setAccessible(true);
 			Object value = getter.invoke(object);
 			return value;
 		} catch (Exception e) {
-			throw new ParsingException(this, e.getMessage());
+			throw new TemplaterException(this, e.getMessage());
 		}
 	}
 
-	private Method getGetter(Object object, String name) throws ParsingException {
+	private Method getGetter(Object object, String name) throws TemplaterException {
 		try {
 			if (object == null) {
 				throw new NullPointerException(name);
@@ -85,9 +87,9 @@ public class Expr extends Block {
 				return getMethod;
 			}
 		} catch (NullPointerException e) {
-			throw new ParsingException(this, e.getMessage());
+			throw new TemplaterException(this, e.getMessage());
 		} catch (Exception e) {
-			throw new ParsingException(this, "field '" + name + "' not found in class '" + object.getClass() + "'");
+			throw new TemplaterException(this, "field '" + name + "' not found in class '" + object.getClass() + "'");
 		}
 	}
 

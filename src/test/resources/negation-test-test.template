@@ -1,0 +1,4 @@
+${if message}
+${if message.hello}${message.hello}${if}${if not message.hello}Salut${if} ${if message.world}${message.world}${if}${if not message.world}le monde${if}!
+${if}
+${if not message}Salut tout le monde !${if}

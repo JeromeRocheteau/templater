@@ -5,6 +5,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+
+import com.sloi.formatter.Formatter;
+import com.sloi.templates.Block;
+import com.sloi.templates.Expr;
+import com.sloi.templates.Func;
+import com.sloi.templates.Loop;
+import com.sloi.templates.StartLoop;
+import com.sloi.templates.StartTest;
+import com.sloi.templates.StopLoop;
+import com.sloi.templates.StopTest;
+import com.sloi.templates.Templatable;
+import com.sloi.templates.Template;
+import com.sloi.templates.Test;
+import com.sloi.templates.Text;
 
 public class Templater extends Template {
 
@@ -23,13 +38,24 @@ public class Templater extends Template {
 	private static final Pattern FUNC = Pattern.compile("\\s*(\\w|\\.)+\\s*:\\s*\\w+");
 	private static final Pattern DONE = Pattern.compile("for");
 	private static final Pattern END = Pattern.compile("if");
+
+	private Map<String, Formatter> formatters;
+	
+	public <T> void addFormatter(String name, Formatter formatter) {
+		formatters.put(name, formatter);
+	}
+	
+	private Templater() {
+		formatters = new HashMap<String, Formatter>();
+	}
 	
 	public Templater(Reader reader) throws Exception {
+		this();
 		String template = IOUtils.toString(reader);
 		this.doLoad(new StringBuffer(template));
 	}
 	
-	public void doProcess(Map<String, Object> scopes, Writer writer) throws ParsingException, IOException {
+	public void doProcess(Map<String, Object> scopes, Writer writer) throws TemplaterException, IOException {
 		StringBuffer buffer = this.doProcess(scopes);
 		IOUtils.copy(new StringReader(buffer.toString()), writer);
 	}
@@ -71,14 +97,14 @@ public class Templater extends Template {
 	        		not = Boolean.FALSE;
 	        		path = cond.split("\\.");
 	        	}
-	        	StartTest loop = new StartTest();
-	        	loop.setNot(not);
-	        	loop.setStart(start);
-	        	loop.setStop(stop);
+	        	StartTest test = new StartTest();
+	        	test.setNot(not);
+	        	test.setStart(start);
+	        	test.setStop(stop);
 	        	Expr iter = new Expr();
 	        	iter.setPath(path);
-	        	loop.setExpr(iter);
-	        	this.getBlocks().add(loop);
+	        	test.setExpr(iter);
+	        	this.getBlocks().add(test);
 	        } else if (LOOP.matcher(key).matches()) {
 	        	String[] cond = key.substring(3).split(":");
 	        	if (cond.length == 2) {
@@ -110,6 +136,7 @@ public class Templater extends Template {
 	        		Expr expr = new Expr();
 	        		expr.setPath(path.split("\\."));
 			    	Func func = new Func();
+			    	func.setFormatters(formatters);
 			    	func.setStart(start);
 			    	func.setStop(stop);
 			    	func.setName(name);
@@ -231,6 +258,8 @@ public class Templater extends Template {
 		}
 	}
 
+	/*
+	
 	private void doPrunHead(String prefix, Block block) {
 		if (block instanceof Text) {
 			Text text = (Text) block;
@@ -250,5 +279,7 @@ public class Templater extends Template {
 			}
 		}
 	}
+	
+	*/
 	
 }

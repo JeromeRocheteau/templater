@@ -1,7 +1,9 @@
-package com.sloi.templater;
+package com.sloi.templates;
 
 import java.util.List;
 import java.util.Map;
+
+import com.sloi.templater.TemplaterException;
 
 public class Template extends Block {
 
@@ -16,7 +18,7 @@ public class Template extends Block {
 	}
 
 	@Override
-	public StringBuffer doProcess(Map<String, Object> scope) throws ParsingException {
+	public StringBuffer doProcess(Map<String, Object> scope) throws TemplaterException {
 		StringBuffer buffer = new StringBuffer(4096);
 		for (Block block : blocks) {
 			buffer.append(block.doProcess(scope));

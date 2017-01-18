@@ -1,7 +1,9 @@
-package com.sloi.templater;
+package com.sloi.templates;
 
 import java.util.Collection;
 import java.util.Map;
+
+import com.sloi.templater.TemplaterException;
 
 public class Test extends Block implements Templatable {
 
@@ -36,7 +38,7 @@ public class Test extends Block implements Templatable {
 	}
 
 	@Override
-	public StringBuffer doProcess(Map<String, Object> scope) throws ParsingException {
+	public StringBuffer doProcess(Map<String, Object> scope) throws TemplaterException {
 		Object value = expr.getValue(scope);
 		if (value == null) {
 			if (not) {
@@ -66,13 +68,13 @@ public class Test extends Block implements Templatable {
 		}
 	}
 
-	private StringBuffer doForward(Map<String, Object> scope) throws ParsingException {
+	private StringBuffer doForward(Map<String, Object> scope) throws TemplaterException {
 		StringBuffer builder = new StringBuffer(2048);
 		builder.append(template.doProcess(scope));
 		return builder;
 	}
 
-	private StringBuffer doProcess(Map<String, Object> scope, Map<?, ?> map) throws ParsingException {
+	private StringBuffer doProcess(Map<String, Object> scope, Map<?, ?> map) throws TemplaterException {
 		if (!not && !map.isEmpty()) {
 			return doForward(scope);
 		} else if (not && map.isEmpty()) {
@@ -82,7 +84,7 @@ public class Test extends Block implements Templatable {
 		}
 	}
 
-	private StringBuffer doProcess(Map<String, Object> scope, Collection<?> collection) throws ParsingException {
+	private StringBuffer doProcess(Map<String, Object> scope, Collection<?> collection) throws TemplaterException {
 		if (!not && !collection.isEmpty()) {
 			return doForward(scope);
 		} else if (not && collection.isEmpty()) {
@@ -92,10 +94,10 @@ public class Test extends Block implements Templatable {
 		}
 	}
 
-	private StringBuffer doProcess(Map<String, Object> scope, Boolean value) throws ParsingException {
-		if (!not && value) {
+	private StringBuffer doProcess(Map<String, Object> scope, Boolean value) throws TemplaterException {
+		if (!not && value.booleanValue()) {
 			return doForward(scope);
-		} else if (not && !value) {
+		} else if (not && !value.booleanValue()) {
 			return doForward(scope);
 		} else {
 			return new StringBuffer("");

@@ -1,8 +1,10 @@
-package com.sloi.templater;
+package com.sloi.templates;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import com.sloi.templater.TemplaterException;
 
 public class Loop extends Block implements Templatable {
 
@@ -37,7 +39,7 @@ public class Loop extends Block implements Templatable {
 	}
 
 	@Override
-	public StringBuffer doProcess(Map<String, Object> scope) throws ParsingException {
+	public StringBuffer doProcess(Map<String, Object> scope) throws TemplaterException {
 		StringBuffer builder = new StringBuffer(2048);		
 		Object value = iterator.getValue(scope);
 		if (value instanceof Iterable<?>) {
@@ -55,7 +57,7 @@ public class Loop extends Block implements Templatable {
 		return builder;
 	}
 
-	private void doIterate(Map<String, Object> scope, StringBuffer builder, Iterator<?> it, int size) throws ParsingException {
+	private void doIterate(Map<String, Object> scope, StringBuffer builder, Iterator<?> it, int size) throws TemplaterException {
 		scope.put(variable + "-size", size);
 		scope.put(variable + "-first", true);
 		scope.put(variable + "-last", false);

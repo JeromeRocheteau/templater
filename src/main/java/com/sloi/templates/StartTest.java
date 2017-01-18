@@ -1,6 +1,8 @@
-package com.sloi.templater;
+package com.sloi.templates;
 
 import java.util.Map;
+
+import com.sloi.templater.TemplaterException;
 
 public class StartTest extends Block {
 
@@ -25,8 +27,8 @@ public class StartTest extends Block {
 	}
 
 	@Override
-	public StringBuffer doProcess(Map<String, Object> scope) throws ParsingException {
-		throw new ParsingException(this, "");
+	public StringBuffer doProcess(Map<String, Object> scope) throws TemplaterException {
+		throw new TemplaterException(this, "");
 	}
 
 }

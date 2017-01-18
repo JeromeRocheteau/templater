@@ -1,6 +1,8 @@
 package com.sloi.templater;
 
-public class ParsingException extends Exception {
+import com.sloi.templates.Block;
+
+public class TemplaterException extends Exception {
 
 	private static final long serialVersionUID = 20150522001L;
 
@@ -8,7 +10,7 @@ public class ParsingException extends Exception {
 	
 	private Block block;
 	
-	public ParsingException(Block block, String message) {
+	public TemplaterException(Block block, String message) {
 		this.block = block;
 		this.message = message;
 	}

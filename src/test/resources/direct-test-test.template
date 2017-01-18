@@ -1,0 +1,3 @@
+${if message}
+${if message.hello}${message.hello}${if} ${if message.world}${message.world}${if}!
+${if}

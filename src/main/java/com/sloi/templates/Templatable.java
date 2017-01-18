@@ -1,4 +1,5 @@
-package com.sloi.templater;
+package com.sloi.templates;
+
 
 public interface Templatable {
 

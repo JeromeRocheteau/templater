@@ -1,0 +1,4 @@
+${if words}
+${for word : words}${if not word-first} ${if}${word-index}=${word}${if word-last}!${if}${for}
+${if}
+${if not words}Salut tout le monde !${if}

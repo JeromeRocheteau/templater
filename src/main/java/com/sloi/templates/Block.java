@@ -1,6 +1,8 @@
-package com.sloi.templater;
+package com.sloi.templates;
 
 import java.util.Map;
+
+import com.sloi.templater.TemplaterException;
 
 public abstract class Block implements Comparable<Block> {
 
@@ -34,6 +36,6 @@ public abstract class Block implements Comparable<Block> {
 		}
 	}
 
-	public abstract StringBuffer doProcess(Map<String, Object> scope) throws ParsingException;
+	public abstract StringBuffer doProcess(Map<String, Object> scope) throws TemplaterException;
 	
 }

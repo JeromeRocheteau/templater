@@ -1,0 +1,1 @@
+${message.hello : lowercase} ${message.world : uppercase}!
