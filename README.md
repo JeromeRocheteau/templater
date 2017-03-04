@@ -27,9 +27,9 @@ Once done, you need to insert the following dependency into your file `pom.xml`:
 ### How to use this library?
 
 There are only 2 steps to follow in order to process templates i.e. it requires a template (file or string)
-and provides a string buffer that corresponds to the input template that has been fulfilled by the cope values:
+and provides a string buffer that corresponds to the input template that has been fulfilled by some scope values:
 
-1. create only once a `Templater` object by the means of its constructor by providing a `Reader` object build from an input source that corresponds to the template;
+1. create only once a `Templater` object by the means of its constructor in providing a `Reader` object build from an input source that corresponds to the template;
 2. call as often as wanted the `doProcess` method in providing values to inject into the tempate map from strings to objects.
 
 The following source code can help:
@@ -37,34 +37,37 @@ The following source code can help:
 ```java
 public class MyTemplater {
 
-	private Templater templater;
+  private Templater templater;
 	
   public void setUp(String path) throws Exception {
-  	InputStream stream = this.getClass().getResourceAsStream(path);
-  	Reader reader = new InputStreamReader(stream);
+    InputStream stream = new FileInputStream(path);
+    Reader reader = new InputStreamReader(stream);
     templater = new Templater(reader);
   }
-	
-	public void doTemplate(Map<String, Object> scope) throws Exception {
-		StringBuffer buffer = templater.doProcess(scope);
-	}
+
+  public void doTemplate(Map<String, Object> scope) throws Exception {
+    StringBuffer buffer = templater.doProcess(scope);
+  }
   
 }
 ```
 
-Templates are build using a simple grammar. The latter corresponds to text files with 
-instructions that are defined according to the pattern `${...}`. 
-Values can be injected into the template if they belong 
-to the scope parameter of the `doProcess` method. 
+### How to write templates?
+
+Templates are text files with special instructions defined by the pattern `${...}`. 
+Values can be injected into the template if they belong to the scope of the `doProcess` method. 
 Scope elements can be either:
 
 - values `${value}`, 
-- object fields `${object.field}` or `${object.innerObject.field}`, 
+- object fields `${object.field}`, 
+  - field paths can go through several objects `${object.innerObject.field}`;
 - collections iterable according to a loop `${for item : collection} ... ${for}`, 
   - use `${item-index}` within a loop to get the index of the item in the iterared collection;
   - use `${item-first}` within a loop to get a boolean value `true` if the item is the first of the collection;
   - use `${item-last}` within a loop to get a boolean value `true` if the item is the last of the collection;
-- maps iterable  according to a loop `${for entry : map} ... ${entry.key} ... ${entry.value} ... ${for}`.
+- maps iterable  according to a loop `${for entry : map} ... ${for}`.
+  - use `${entry.key}` within a loop to get the entry key of iterared map;
+  - use `${entry.value}` within a loop to get the entry value of iterared map;
 
 Moreover, a test instruction `${if test} ... ${if}` can be used in order to process the embedded template
 only if the testable value `test` is true. Testable values can be either:
