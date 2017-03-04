@@ -4,6 +4,10 @@ Java Library for template engine processing
 
 ## Getting Started
 
+- [How to install this library?] (#how-to-install-this-library)
+- [How to use this library?] (#how-to-use-this-library)
+- [How to write templates?] (#how-to-write-templates)
+
 ### How to install this library?
 
 Currently, you have to retrieve source code from the GitHub repository and install the Java library locally thanks to Maven.
