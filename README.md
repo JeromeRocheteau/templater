@@ -24,7 +24,6 @@ Once done, you need to insert the following dependency into your file `pom.xml`:
     </dependency>
 ```
 
-
 ### How to use this library?
 
 There are only 2 steps to follow in order to process templates i.e. it requires a template (file or string)
@@ -54,7 +53,7 @@ public class MyTemplater {
 ```
 
 Templates are build using a simple grammar. The latter corresponds to text files with 
-template instructions are defined according to the pattern `${...}`. 
+instructions that are defined according to the pattern `${...}`. 
 Values can be injected into the template if they belong 
 to the scope parameter of the `doProcess` method. 
 Scope elements can be either:
@@ -68,7 +67,7 @@ Scope elements can be either:
 - maps iterable  according to a loop `${for entry : map} ... ${entry.key} ... ${entry.value} ... ${for}`.
 
 Moreover, a test instruction `${if test} ... ${if}` can be used in order to process the embedded template
-ony if the testable value `test` is true. Testable values can be either:
+only if the testable value `test` is true. Testable values can be either:
 
 - booleans: the test is true if and only if the boolean is true;
 - objects: the test is true if and only if the object is not null;
