@@ -68,7 +68,7 @@ Scope elements can be either:
 - maps iterable  according to a loop `${for entry : map} ... ${entry.key} ... ${entry.value} ... ${for}`.
 
 Moreover, a test instruction `${if test} ... ${if}` can be used in order to process the embedded template
-ony if the testable value `test` is true. Testables values can be either:
+ony if the testable value `test` is true. Testable values can be either:
 
 - booleans: the test is true if and only if the boolean is true;
 - objects: the test is true if and only if the object is not null;
