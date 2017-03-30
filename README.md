@@ -51,6 +51,7 @@ public class MyTemplater {
 
   public void doTemplate(Map<String, Object> scope) throws Exception {
     StringBuffer buffer = templater.doProcess(scope);
+    System.out.println(buffer.toString());
   }
   
 }
