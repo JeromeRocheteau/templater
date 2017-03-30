@@ -4,9 +4,9 @@ Java Library for template engine processing
 
 ## Getting Started
 
-- [How to install this library?] (#how-to-install-this-library)
-- [How to use this library?] (#how-to-use-this-library)
-- [How to write templates?] (#how-to-write-templates)
+- [How to install this library?] (https://github.com/JeromeRocheteau/templater#how-to-install-this-library)
+- [How to use this library?] (https://github.com/JeromeRocheteau/templater#how-to-use-this-library)
+- [How to write templates?] (https://github.com/JeromeRocheteau/templater#how-to-write-templates)
 
 ### How to install this library?
 
